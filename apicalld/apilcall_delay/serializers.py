@@ -6,4 +6,4 @@ from .models import Apicall
 class ApicallSerializer(serializers.ModelSerializer):
     class Meta:
         model = Apicall
-        fields = ["task", "completed", "timestamp", "updated", "user"]
+        # fields = ["task", "completed", "timestamp", "updated", "user"]

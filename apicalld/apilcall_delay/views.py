@@ -10,7 +10,7 @@ from .models import Apicall
 from .serializers import ApicallSerializer
 # Create your views here.
 
-import time
+import time,random
 
 class ApicallApiView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -19,25 +19,12 @@ class ApicallApiView(APIView):
 
         todos = Apicall.objects.filter(user = request.user.id)
         serializer = ApicallSerializer(todos, many=True)
-        resp_time = 2
-        time.sleep(resp_time)
+        
+        resp_time = random.randint(1,100)
+        
+
+        # time.sleep(resp_time)
         return Response({
             'message': f'Delay with {resp_time} secconds'
         })
     
-    # 2. Create
-    def post(self, request, *args, **kwargs):
-        '''
-        Create the Todo with given todo data
-        '''
-        data = {
-            'task': request.data.get('task'), 
-            'completed': request.data.get('completed'), 
-            'user': request.user.id
-        }
-        serializer = ApicallSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

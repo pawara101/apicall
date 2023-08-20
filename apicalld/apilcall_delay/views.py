@@ -10,6 +10,7 @@ from .models import Apicall
 from .serializers import ApicallSerializer
 # Create your views here.
 
+import time
 
 class ApicallApiView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -18,7 +19,11 @@ class ApicallApiView(APIView):
 
         todos = Apicall.objects.filter(user = request.user.id)
         serializer = ApicallSerializer(todos, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        resp_time = 2
+        time.sleep(resp_time)
+        return Response({
+            'message': f'Delay with {resp_time} secconds'
+        })
     
     # 2. Create
     def post(self, request, *args, **kwargs):

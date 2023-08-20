@@ -1,10 +1,11 @@
 # todo/todo/urls.py : Main urls.py
 from django.contrib import admin
 from django.urls import path, include
-from apicalld import urls as apilcall_delay_urls
+
+from .views import (
+    ApicallApiView,
+)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
-    path('apicalls/', include(apilcall_delay_urls)),
+    path('api', ApicallApiView.as_view()),
 ]

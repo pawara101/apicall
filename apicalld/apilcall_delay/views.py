@@ -17,5 +17,22 @@ class ApicallApiView(APIView):
     def get(self, request, *args, **kwargs):
 
         todos = Apicall.objects.filter(user = request.user.id)
-        serializer = ApicallApiView(todos, many=True)
+        serializer = ApicallSerializer(todos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    # 2. Create
+    def post(self, request, *args, **kwargs):
+        '''
+        Create the Todo with given todo data
+        '''
+        data = {
+            'task': request.data.get('task'), 
+            'completed': request.data.get('completed'), 
+            'user': request.user.id
+        }
+        serializer = ApicallSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
